@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY','$14_w80r77t^aed1g*oj@1$r#+9_w9apfbkg!9pw44sxr@j@or')
 
 # Debug Setting
-DEBUG = True
+DEBUG = False
 
 # Allowed Hosts
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']

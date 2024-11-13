@@ -1,30 +1,45 @@
-import axios from 'axios';
+const BASE_URL = 'http://127.0.0.1:8000/api/tasks';
 
-// Create an Axios instance
-const API = axios.create({
-  baseURL: 'http://localhost:8000/api/', // Update to your Django backend URL if different
-});
-
-// Function to fetch tasks
-export const fetchTasks = async () => {
-  try {
-    const response = await API.get('/tasks/');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching tasks:', error);
-    throw error;
-  }
+export const getTasks = async (filters = {}) => {
+  const url = new URL(BASE_URL + '/');
+  Object.keys(filters).forEach(key => url.searchParams.append(key, filters[key]));
+  const response = await fetch(url);
+  return await response.json();
 };
 
-// Function to create a task
 export const createTask = async (taskData) => {
-  try {
-    const response = await API.post('/tasks/', taskData);
-    return response.data;
-  } catch (error) {
-    console.error('Error creating task:', error);
-    throw error;
-  }
+  const response = await fetch(`${BASE_URL}/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(taskData)
+  });
+  return await response.json();
 };
 
-export default API;
+export const markTaskCompleted = async (taskId) => {
+  const response = await fetch(`${BASE_URL}/${taskId}/mark_completed/`, {
+    method: 'POST'
+  });
+  return await response.json();
+};
+
+export const getCompletedTasks = async () => {
+  const response = await fetch(`${BASE_URL}/completed/`);
+  return await response.json();
+};
+
+export const updateTask = async (taskId, taskData) => {
+  const response = await fetch(`${BASE_URL}/${taskId}/`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(taskData)
+  });
+  return await response.json();
+};
+
+export const deleteTask = async (taskId) => {
+  const response = await fetch(`${BASE_URL}/${taskId}/`, {
+    method: 'DELETE'
+  });
+  return response.ok;
+};

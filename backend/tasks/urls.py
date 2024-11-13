@@ -1,6 +1,10 @@
-from django.urls import path
-from .views import TaskListCreate
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TaskViewSet
+
+router = DefaultRouter()
+router.register(r'tasks', TaskViewSet)
 
 urlpatterns = [
-    path('tasks/', TaskListCreate.as_view(), name='task-list-create'),
+    path('tasks/', include(router.urls)),  # Make sure the route is correct
 ]

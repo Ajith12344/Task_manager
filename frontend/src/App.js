@@ -1,14 +1,28 @@
-// frontend/src/App.js
-import React from 'react';
-import TaskForm from './components/TaskForm';
+import React, { useState, useEffect } from 'react';
+import { getTasks } from './services/api';  // Use getTasks instead of fetchTasks
 import TaskList from './components/TaskList';
+import TaskForm from './components/TaskForm';
 
 function App() {
+  const [tasks, setTasks] = useState([]);
+
+  const fetchTasks = async () => {
+    try {
+      const taskData = await getTasks();
+      setTasks(taskData);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []); // Run fetchTasks when the component mounts
+
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8">Task Manager</h1>
-      <TaskForm />
-      <TaskList />
+    <div className="App">
+      <TaskForm refreshTasks={fetchTasks} />
+      <TaskList tasks={tasks} />
     </div>
   );
 }
