@@ -17,8 +17,9 @@ export const createTask = async (taskData) => {
 };
 
 export const markTaskCompleted = async (taskId) => {
-  const response = await fetch(`${BASE_URL}/${taskId}/mark_completed/`, {
-    method: 'POST'
+  // Using PATCH to mark the task as completed
+  const response = await fetch(`${BASE_URL}/${taskId}cd`, {
+    method: 'PATCH', // Changed to PATCH for updating a resource partially
   });
   return await response.json();
 };
@@ -29,6 +30,7 @@ export const getCompletedTasks = async () => {
 };
 
 export const updateTask = async (taskId, taskData) => {
+  // Using PUT for updating the entire task
   const response = await fetch(`${BASE_URL}/${taskId}/`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
